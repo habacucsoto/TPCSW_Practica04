@@ -38,9 +38,22 @@ public class ControllerEmpleados {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-       
-        return null;
+    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Empleado input) {
+       Optional<Empleado> res = repositoryEmpleados.findById(Long.valueOf(id));
+       if (res.isPresent()) {
+        Empleado empleado = res.get();
+        
+        // Solo actualiza los campos que vienen en la solicitud
+        if (input.getNombre() != null) empleado.setNombre(input.getNombre());
+        if (input.getDireccion() != null) empleado.setDireccion(input.getDireccion());
+        if (input.getTelefono() != null) empleado.setTelefono(input.getTelefono());
+        if (input.getDepto() != null) empleado.setDepto(input.getDepto());
+        
+        repositoryEmpleados.save(empleado);
+        return new ResponseEntity<>(empleado, HttpStatus.OK);
+    } else {
+        return new ResponseEntity<>("Empleado no encontrado", HttpStatus.NOT_FOUND);
+    }
     }
     
     @PostMapping
@@ -51,7 +64,12 @@ public class ControllerEmpleados {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        return null;
+        Optional<Empleado> res = repositoryEmpleados.findById(Long.valueOf(id));
+         repositoryEmpleados.deleteById(Long.valueOf(id));
+                     return new ResponseEntity<>("Empleado eliminado", HttpStatus.NO_CONTENT);
+
+         
     }
+    
     
 }
