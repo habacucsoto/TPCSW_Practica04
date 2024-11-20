@@ -43,7 +43,6 @@ public class ControllerEmpleados {
        if (res.isPresent()) {
         Empleado empleado = res.get();
         
-        // Solo actualiza los campos que vienen en la solicitud
         if (input.getNombre() != null) empleado.setNombre(input.getNombre());
         if (input.getDireccion() != null) empleado.setDireccion(input.getDireccion());
         if (input.getTelefono() != null) empleado.setTelefono(input.getTelefono());
